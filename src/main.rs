@@ -19,14 +19,22 @@ fn main() {
 
 struct MyApp {
     command: String,
-    timing: String,
+    timing_minute: String,
+    timing_hour: String,
+    timing_day_of_month: String,
+    timing_month: String,
+    timing_day_of_week: String,
 }
 
 impl Default for MyApp {
     fn default() -> Self {
         Self {
             command: "echo 'hello'".to_owned(),
-            timing: "0 0 0 * *".to_owned(),
+            timing_minute: "*".to_owned(),
+            timing_hour: "*".to_owned(),
+            timing_day_of_month: "*".to_owned(),
+            timing_month: "*".to_owned(),
+            timing_day_of_week: "*".to_owned(),
         }
     }
 }
@@ -38,13 +46,39 @@ impl eframe::App for MyApp {
                 ui.label("command");
                 ui.text_edit_singleline(&mut self.command);
             });
+            ui.vertical(|ui| {
+                ui.horizontal(|ui| {
+                    ui.label("Minute");
+                    ui.text_edit_singleline(&mut self.timing_minute);
+                });
+                ui.horizontal(|ui| {
+                    ui.label("Hour");
+                    ui.text_edit_singleline(&mut self.timing_hour);
+                });
+                ui.horizontal(|ui| {
+                    ui.label("Day Of Month");
+                    ui.text_edit_singleline(&mut self.timing_day_of_month);
+                });
+                ui.horizontal(|ui| {
+                    ui.label("Month");
+                    ui.text_edit_singleline(&mut self.timing_month);
+                });
+                ui.horizontal(|ui| {
+                    ui.label("Day Of Week");
+                    ui.text_edit_singleline(&mut self.timing_day_of_week);
+                });
+            });
             if ui.button("Submit").clicked() {
                 println!("cron has been submitted");
                 fs::write(
                     env::var("USER").unwrap().to_string(),
                     format!(
-                        "{timing} {command}\n",
-                        timing = self.timing.to_owned(),
+                        "{timing_minute} {timing_hour} {timing_day_of_month} {timing_month} {timing_day_of_week} {command}\n",
+                        timing_minute = self.timing_minute.to_owned(),
+                        timing_hour = self.timing_hour.to_owned(),
+                        timing_day_of_month = self.timing_day_of_month.to_owned(),
+                        timing_month = self.timing_month.to_owned(),
+                        timing_day_of_week = self.timing_day_of_week.to_owned(),
                         command = self.command.to_owned()
                     ),
                 )
