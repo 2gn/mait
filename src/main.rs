@@ -10,11 +10,7 @@ use std::fs;
 
 fn main() {
     let options = eframe::NativeOptions::default();
-    eframe::run_native(
-        "My egui App",
-        options,
-        Box::new(|_cc| Box::new(MyApp::default())),
-    );
+    eframe::run_native("Mait", options, Box::new(|_cc| Box::new(MyApp::default())));
 }
 
 struct MyApp {
